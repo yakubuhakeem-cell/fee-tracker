@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'   # change if your project uses Node 20 or another version
+          node-version: '20'   # change if your project uses Node 20 or another version
 
       - name: Install dependencies
         run: npm install
@@ -30,7 +30,7 @@ jobs:
       - name: Upload build output
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build   # ⚠️ change to 'dist' if your project outputs there
+          path: dist  # ⚠️ change to 'dist' if your project outputs there
 
       - name: Deploy to GitHub Pages
         id: deployment
