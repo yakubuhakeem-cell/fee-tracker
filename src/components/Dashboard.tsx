@@ -6,15 +6,15 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { SchoolCategory, StudentClass } from '../types';
-import { 
-  TrendingUp, 
-  Award, 
-  AlertTriangle, 
-  Coins, 
-  RefreshCw, 
-  Calendar, 
-  PhoneCall, 
-  Check, 
+import {
+  TrendingUp,
+  Award,
+  AlertTriangle,
+  Coins,
+  RefreshCw,
+  Calendar,
+  PhoneCall,
+  Check,
   ExternalLink,
   LayoutGrid,
   ListFilter,
@@ -26,13 +26,13 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 export const Dashboard: React.FC = () => {
-  const { 
+  const {
     currentDate,
     setCurrentDate,
-    payments, 
-    getDailyStats, 
-    getTeacherMetrics, 
-    getCashFlowTrend, 
+    payments,
+    getDailyStats,
+    getTeacherMetrics,
+    getCashFlowTrend,
     getPendingAlerts,
     currentUser
   } = useApp();
@@ -84,8 +84,8 @@ export const Dashboard: React.FC = () => {
   const filteredAlerts = useMemo(() => {
     if (!alertSearch.trim()) return pendingAlerts;
     const lower = alertSearch.toLowerCase();
-    return pendingAlerts.filter(s => 
-      s.studentName.toLowerCase().includes(lower) || 
+    return pendingAlerts.filter(s =>
+      s.studentName.toLowerCase().includes(lower) ||
       s.class.toLowerCase().includes(lower)
     );
   }, [pendingAlerts, alertSearch]);
@@ -93,8 +93,8 @@ export const Dashboard: React.FC = () => {
   const filteredTeacherMetrics = useMemo(() => {
     if (!classPerfSearch.trim()) return teacherMetrics;
     const lower = classPerfSearch.toLowerCase();
-    return teacherMetrics.filter(m => 
-      m.className.toLowerCase().includes(lower) || 
+    return teacherMetrics.filter(m =>
+      m.className.toLowerCase().includes(lower) ||
       m.teacherName.toLowerCase().includes(lower)
     );
   }, [teacherMetrics, classPerfSearch]);
@@ -103,7 +103,7 @@ export const Dashboard: React.FC = () => {
     <div className="space-y-6 font-sans">
       {/* Date & Layout Control Header */}
       <div className="bg-neutral-900 border-4 border-neutral-800 p-6 flex flex-col xl:flex-row justify-between items-stretch xl:items-center gap-6">
-        
+
         {/* Date Selector controls */}
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-3">
@@ -126,31 +126,28 @@ export const Dashboard: React.FC = () => {
         <div className="flex flex-wrap bg-neutral-950 p-1.5 border-2 border-neutral-850 gap-1.5">
           <button
             onClick={() => setActiveLayout('bento')}
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
-              activeLayout === 'bento' 
-                ? 'bg-white text-black font-black' 
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'bento'
+                ? 'bg-white text-black font-black'
                 : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
-            }`}
+              }`}
           >
             <LayoutGrid size={14} /> Sleek Bento Grid
           </button>
           <button
             onClick={() => setActiveLayout('class-perf')}
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
-              activeLayout === 'class-perf' 
-                ? 'bg-white text-black font-black' 
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'class-perf'
+                ? 'bg-white text-black font-black'
                 : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
-            }`}
+              }`}
           >
             <Activity size={14} /> Classrooms Tracker
           </button>
           <button
             onClick={() => setActiveLayout('alerts-desk')}
-            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${
-              activeLayout === 'alerts-desk' 
-                ? 'bg-white text-black font-black' 
+            className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'alerts-desk'
+                ? 'bg-white text-black font-black'
                 : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
-            }`}
+              }`}
           >
             <AlertTriangle size={14} className={pendingAlerts.length > 0 ? 'text-amber-450 animate-bounce' : ''} /> Alerts Deck ({pendingAlerts.length})
           </button>
@@ -159,7 +156,7 @@ export const Dashboard: React.FC = () => {
 
       {/* 4 Interactive KPI Cards - Heightened Design with Side Accent borders */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        
+
         {/* Metric 1: Total Collected */}
         <div className="bg-neutral-900 border-4 border-neutral-800 border-l-amber-400 p-6 flex flex-col justify-between min-h-[145px] hover:border-r-neutral-700 transition-all">
           <div className="flex justify-between items-start">
@@ -183,8 +180,8 @@ export const Dashboard: React.FC = () => {
           <div className="mt-3">
             <h3 className="text-3xl font-black font-mono text-white tracking-tight leading-none">{stats.collectionRate.toFixed(1)}%</h3>
             <div className="w-full bg-neutral-950 h-1.5 mt-2.5 border border-neutral-850">
-              <div 
-                className="bg-amber-400 h-full transition-all duration-500" 
+              <div
+                className="bg-amber-400 h-full transition-all duration-500"
                 style={{ width: `${Math.min(stats.collectionRate, 100)}%` }}
               />
             </div>
@@ -236,7 +233,7 @@ export const Dashboard: React.FC = () => {
           >
             {/* Top row: Trend Graphics & Category split Bento block */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              
+
               {/* Cash Flow Trends Graph Block */}
               <div className="bg-neutral-900 border-4 border-neutral-800 p-8 col-span-1 lg:col-span-2 space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -244,22 +241,20 @@ export const Dashboard: React.FC = () => {
                     <h3 className="text-xl font-black uppercase italic text-white tracking-tight">Ledger Cash Flow Analytics</h3>
                     <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest mt-1">Weekly financial status logs</p>
                   </div>
-                  
+
                   {/* Interactive toggle between Revenue GHC values and transaction count volumes */}
                   <div className="flex bg-neutral-950 p-1 border border-neutral-800 max-w-fit self-start sm:self-auto">
                     <button
                       onClick={() => setChartMetric('revenue')}
-                      className={`px-3 py-1.5 text-[9px] font-black font-mono uppercase tracking-widest transition-colors cursor-pointer ${
-                        chartMetric === 'revenue' ? 'bg-amber-400 text-black font-extrabold' : 'text-neutral-400 hover:text-white'
-                      }`}
+                      className={`px-3 py-1.5 text-[9px] font-black font-mono uppercase tracking-widest transition-colors cursor-pointer ${chartMetric === 'revenue' ? 'bg-amber-400 text-black font-extrabold' : 'text-neutral-400 hover:text-white'
+                        }`}
                     >
                       Revenue (GHC)
                     </button>
                     <button
                       onClick={() => setChartMetric('volume')}
-                      className={`px-3 py-1.5 text-[9px] font-black font-mono uppercase tracking-widest transition-colors cursor-pointer ${
-                        chartMetric === 'volume' ? 'bg-amber-400 text-black font-extrabold' : 'text-neutral-400 hover:text-white'
-                      }`}
+                      className={`px-3 py-1.5 text-[9px] font-black font-mono uppercase tracking-widest transition-colors cursor-pointer ${chartMetric === 'volume' ? 'bg-amber-400 text-black font-extrabold' : 'text-neutral-400 hover:text-white'
+                        }`}
                     >
                       Tx Volume
                     </button>
@@ -280,21 +275,21 @@ export const Dashboard: React.FC = () => {
                       {trends.map((t, idx) => {
                         const xPercent = trends.length > 1 ? (idx / (trends.length - 1)) * 100 : 50;
                         const targetVal = chartMetric === 'revenue' ? t.amount : t.transactions;
-                        const normalizedY = 195 - (targetVal / maxTrendAmount) * 165; 
+                        const normalizedY = 195 - (targetVal / maxTrendAmount) * 165;
 
                         return (
                           <g key={t.date} className="group cursor-pointer">
                             {/* Vertical Hover Guides */}
-                            <line 
-                              x1={`${xPercent}%`} 
-                              y1="5" 
-                              x2={`${xPercent}%`} 
-                              y2="200" 
-                              stroke="#1f1f1f" 
-                              strokeWidth="1.5" 
+                            <line
+                              x1={`${xPercent}%`}
+                              y1="5"
+                              x2={`${xPercent}%`}
+                              y2="200"
+                              stroke="#1f1f1f"
+                              strokeWidth="1.5"
                               className="group-hover:stroke-neutral-850 transition-colors"
                             />
-                            
+
                             {/* Visual Highlight column trigger bars */}
                             <rect
                               x={`calc(${xPercent}% - 14px)`}
@@ -306,11 +301,11 @@ export const Dashboard: React.FC = () => {
                             />
 
                             {/* Node points */}
-                            <circle 
-                              cx={`${xPercent}%`} 
-                              cy={normalizedY} 
-                              r="7" 
-                              fill={chartMetric === 'revenue' ? '#fbbf24' : '#ffffff'} 
+                            <circle
+                              cx={`${xPercent}%`}
+                              cy={normalizedY}
+                              r="7"
+                              fill={chartMetric === 'revenue' ? '#fbbf24' : '#ffffff'}
                               className="stroke-neutral-900 stroke-2 group-hover:scale-125 transition-transform"
                             />
 
@@ -365,10 +360,10 @@ export const Dashboard: React.FC = () => {
                           </span>
                           <span className="font-mono text-amber-400 font-extrabold text-[12px]">GHC {amount.toFixed(2)}</span>
                         </div>
-                        
+
                         <div className="w-full bg-neutral-900 h-2 border border-neutral-850">
-                          <div 
-                            className={`h-full ${cat === 'Pre-school' ? 'bg-amber-400' : cat === 'Primary' ? 'bg-white' : 'bg-neutral-500'} transition-all duration-500`} 
+                          <div
+                            className={`h-full ${cat === 'Pre-school' ? 'bg-amber-400' : cat === 'Primary' ? 'bg-white' : 'bg-neutral-500'} transition-all duration-500`}
                             style={{ width: `${percent}%` }}
                           />
                         </div>
@@ -391,7 +386,7 @@ export const Dashboard: React.FC = () => {
 
             {/* Bottom Row: Checkpoints preview and alert priorities */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              
+
               {/* Class Performance Tracker table overview */}
               <div className="bg-neutral-900 border-4 border-neutral-800 p-8 col-span-1 lg:col-span-2 space-y-6">
                 <div className="flex justify-between items-center pb-2 border-b-2 border-neutral-850">
@@ -399,7 +394,7 @@ export const Dashboard: React.FC = () => {
                     <h3 className="text-xl font-black uppercase italic text-white tracking-tight">Teacher Performance Dockets</h3>
                     <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest mt-1">Active class checking rates</p>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setActiveLayout('class-perf')}
                     className="text-[9px] font-black font-mono uppercase tracking-wider text-amber-400 hover:text-white flex items-center gap-1 cursor-pointer"
                   >
@@ -430,10 +425,9 @@ export const Dashboard: React.FC = () => {
                             {met.collected.toFixed(2)}
                           </td>
                           <td className="py-3.5 text-right">
-                            <span className={`inline-block px-2.5 py-1 text-[10px] font-black font-mono tracking-widest uppercase ${
-                              met.rate > 85 ? 'bg-emerald-950 border border-emerald-800 text-emerald-400' :
-                              met.rate > 50 ? 'bg-amber-950 border border-amber-800 text-amber-450' : 'bg-red-950 border border-red-800 text-red-450'
-                            }`}>
+                            <span className={`inline-block px-2.5 py-1 text-[10px] font-black font-mono tracking-widest uppercase ${met.rate > 85 ? 'bg-emerald-950 border border-emerald-800 text-emerald-400' :
+                                met.rate > 50 ? 'bg-amber-950 border border-amber-800 text-amber-450' : 'bg-red-950 border border-red-800 text-red-450'
+                              }`}>
                               {met.rate.toFixed(0)}%
                             </span>
                           </td>
@@ -475,11 +469,10 @@ export const Dashboard: React.FC = () => {
                         <button
                           onClick={() => handleDialGuardian(st.studentId, st.guardianPhone)}
                           disabled={notifiedStudents[st.studentId]}
-                          className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-widest border-2 transition-all cursor-pointer ${
-                            notifiedStudents[st.studentId] 
-                              ? 'bg-amber-400 border-amber-400 text-black' 
+                          className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-widest border-2 transition-all cursor-pointer ${notifiedStudents[st.studentId]
+                              ? 'bg-amber-400 border-amber-400 text-black'
                               : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 text-neutral-300 animate-pulse'
-                          }`}
+                            }`}
                         >
                           {notifiedStudents[st.studentId] ? 'DIALING...' : 'DIAL GDN'}
                         </button>
@@ -535,12 +528,12 @@ export const Dashboard: React.FC = () => {
                 </div>
               ) : (
                 filteredTeacherMetrics.map((met) => {
-                  const rateColor = met.rate > 85 
-                    ? 'text-emerald-400 border-emerald-950 bg-emerald-950/25' 
-                    : met.rate > 50 
-                      ? 'text-amber-400 border-amber-950 bg-amber-950/25' 
+                  const rateColor = met.rate > 85
+                    ? 'text-emerald-400 border-emerald-950 bg-emerald-950/25'
+                    : met.rate > 50
+                      ? 'text-amber-400 border-amber-950 bg-amber-950/25'
                       : 'text-red-500 border-red-950 bg-red-950/25';
-                  
+
                   return (
                     <div key={met.className} className="bg-neutral-950 border-2 border-neutral-850 p-6 flex flex-col justify-between gap-5 hover:border-neutral-700 transition">
                       <div className="flex justify-between items-start">
@@ -576,10 +569,9 @@ export const Dashboard: React.FC = () => {
                           <span>{met.rate.toFixed(1)}% Completed</span>
                         </div>
                         <div className="w-full bg-neutral-900 h-2 border border-neutral-850">
-                          <div 
-                            className={`h-full transition-all duration-500 ${
-                              met.rate > 85 ? 'bg-emerald-400' : met.rate > 50 ? 'bg-amber-400' : 'bg-red-500'
-                            }`}
+                          <div
+                            className={`h-full transition-all duration-500 ${met.rate > 85 ? 'bg-emerald-400' : met.rate > 50 ? 'bg-amber-400' : 'bg-red-500'
+                              }`}
                             style={{ width: `${met.rate}%` }}
                           />
                         </div>
@@ -661,11 +653,10 @@ export const Dashboard: React.FC = () => {
                     <button
                       onClick={() => handleDialGuardian(st.studentId, st.guardianPhone)}
                       disabled={notifiedStudents[st.studentId]}
-                      className={`w-full text-center text-xs font-black uppercase tracking-widest py-3.5 border-2 transition-all cursor-pointer ${
-                        notifiedStudents[st.studentId]
+                      className={`w-full text-center text-xs font-black uppercase tracking-widest py-3.5 border-2 transition-all cursor-pointer ${notifiedStudents[st.studentId]
                           ? 'bg-amber-400 border-amber-400 text-black font-black'
                           : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 hover:bg-neutral-900/50 text-white'
-                      }`}
+                        }`}
                     >
                       {notifiedStudents[st.studentId] ? (
                         <span className="flex items-center justify-center gap-1.5">
@@ -687,3 +678,4 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
+export default Dashboard;
