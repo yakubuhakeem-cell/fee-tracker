@@ -32,7 +32,7 @@ function NavigationWrapper() {
 
   // If nobody is logged in, show login page
   if (!currentUser) {
-    return <LoginMFA />;
+    return <LoginPage />;
   }
 
   // Define tab security accessibility by role
