@@ -85,30 +85,65 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const localPayments = localStorage.getItem('s_payments');
     const localUser = localStorage.getItem('s_current_user');
 
-    if (localUsers) {
-      setUsers(JSON.parse(localUsers));
-    } else {
+    // 1. Users list healing load
+    try {
+      if (localUsers) {
+        setUsers(JSON.parse(localUsers));
+      } else {
+        setUsers(INITIAL_USERS);
+        localStorage.setItem('s_users', JSON.stringify(INITIAL_USERS));
+      }
+    } catch (e) {
+      console.warn('Recovered s_users from state corruption:', e);
       setUsers(INITIAL_USERS);
       localStorage.setItem('s_users', JSON.stringify(INITIAL_USERS));
     }
 
-    if (localStudents) {
-      setStudents(JSON.parse(localStudents));
-    } else {
+    // 2. Students list healing load
+    try {
+      if (localStudents) {
+        setStudents(JSON.parse(localStudents));
+      } else {
+        setStudents(INITIAL_STUDENTS);
+        localStorage.setItem('s_students', JSON.stringify(INITIAL_STUDENTS));
+      }
+    } catch (e) {
+      console.warn('Recovered s_students from state corruption:', e);
       setStudents(INITIAL_STUDENTS);
       localStorage.setItem('s_students', JSON.stringify(INITIAL_STUDENTS));
     }
 
-    if (localPayments) {
-      setPayments(JSON.parse(localPayments));
-    } else {
+    // 3. Daily Payments ledger healing load
+    try {
+      if (localPayments) {
+        setPayments(JSON.parse(localPayments));
+      } else {
+        const seeds = generateSeedPayments();
+        setPayments(seeds);
+        localStorage.setItem('s_payments', JSON.stringify(seeds));
+      }
+    } catch (e) {
+      console.warn('Recovered s_payments from state corruption:', e);
       const seeds = generateSeedPayments();
       setPayments(seeds);
       localStorage.setItem('s_payments', JSON.stringify(seeds));
     }
 
-    if (localUser) {
-      setCurrentUser(JSON.parse(localUser));
+    // 4. Session authentication state validation loading
+    try {
+      if (localUser) {
+        const parsed = JSON.parse(localUser);
+        if (parsed && typeof parsed === 'object' && parsed.id && parsed.role) {
+          setCurrentUser(parsed);
+        } else {
+          setCurrentUser(null);
+          localStorage.removeItem('s_current_user');
+        }
+      }
+    } catch (e) {
+      console.warn('Recovered s_current_user authentication state corruption:', e);
+      setCurrentUser(null);
+      localStorage.removeItem('s_current_user');
     }
   }, []);
 
