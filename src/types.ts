@@ -5,7 +5,7 @@
 
 export type SchoolCategory = 'Pre-school' | 'Primary' | 'JHS';
 
-export type StudentClass = 
+export type StudentClass =
   | 'Nursery' | 'KG1' | 'KG2' // Pre-school
   | 'B1' | 'B2' | 'B3' | 'B4' | 'B5' | 'B6' // Primary
   | 'B7' | 'B8' | 'B9'; // JHS

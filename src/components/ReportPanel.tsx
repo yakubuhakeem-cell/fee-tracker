@@ -6,15 +6,15 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { StudentClass, SchoolCategory, PaymentRecord } from '../types';
-import { 
-  FileSpreadsheet, Mail, Search, Calendar, ChevronRight, CheckCircle2, 
-  HelpCircle, Settings, CheckSquare, PlusSquare, ArrowUpDown, X 
+import {
+  FileSpreadsheet, Mail, Search, Calendar, ChevronRight, CheckCircle2,
+  HelpCircle, Settings, CheckSquare, PlusSquare, ArrowUpDown, X
 } from 'lucide-react';
 
 export const ReportPanel: React.FC = () => {
-  const { 
-    payments, 
-    currentDate, 
+  const {
+    payments,
+    currentDate,
     sendMonthlyEmailDraft,
     currentUser,
     verifyPayment
@@ -49,7 +49,7 @@ export const ReportPanel: React.FC = () => {
     // Search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(p => 
+      result = result.filter(p =>
         p.studentName.toLowerCase().includes(query) ||
         p.id.toLowerCase().includes(query)
       );
@@ -139,7 +139,7 @@ export const ReportPanel: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const downloadAnchor = document.createElement("a");
     downloadAnchor.setAttribute("href", encodedUri);
-    
+
     // Naming structure for audits
     const fileDateSuffix = dateFilter ? `_${dateFilter}` : "_FullHistory";
     downloadAnchor.setAttribute("download", `DailySchoolFees_ExcelSheet${fileDateSuffix}.csv`);
@@ -158,7 +158,7 @@ export const ReportPanel: React.FC = () => {
     setEmailLoading(true);
     setTimeout(() => {
       const response = sendMonthlyEmailDraft(recipientEmail);
-      
+
       // Building a true Mailto url so evaluators can test integrated outlook/g-mail
       const subject = encodeURIComponent('DAILY FEE SYSTEM: Verified Auditing Monthly Ledger');
       const body = encodeURIComponent(response.draftContent);
@@ -351,9 +351,9 @@ export const ReportPanel: React.FC = () => {
       {showEmailDrawer && (
         <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
           {/* Backdrop screen */}
-          <div 
+          <div
             onClick={() => setShowEmailDrawer(false)}
-            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-xs transition-opacity" 
+            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-xs transition-opacity"
           />
 
           {/* Drawer container body */}
@@ -363,7 +363,7 @@ export const ReportPanel: React.FC = () => {
                 <span className="text-[10px] text-neutral-500 font-mono tracking-widest font-black uppercase">Accounting Automated summarize dispatch</span>
                 <h3 className="text-base font-black flex items-center gap-1.5 uppercase italic tracking-wider text-white"><Mail size={18} className="text-amber-400" /> Send Monthly Ledger Summary</h3>
               </div>
-              <button 
+              <button
                 onClick={() => setShowEmailDrawer(false)}
                 className="p-1 text-zinc-400 hover:text-white rounded-lg transition-colors cursor-pointer"
               >
@@ -388,7 +388,7 @@ export const ReportPanel: React.FC = () => {
               <div className="bg-neutral-950 p-5 border border-neutral-850 space-y-1.5 font-sans">
                 <span className="text-[10px] font-black text-neutral-400 font-mono uppercase tracking-widest block">Security & Ledger Verification</span>
                 <p className="text-[11px] text-neutral-450 font-bold leading-relaxed">
-                  Upon dispatch, this generates a formatted auditing report utilizing the verified checkpoint numbers in core memory. You can also click 
+                  Upon dispatch, this generates a formatted auditing report utilizing the verified checkpoint numbers in core memory. You can also click
                   the direct mail client link below to launch Outlook/Gmail instantly preloaded.
                 </p>
               </div>
@@ -446,7 +446,7 @@ B7 to B9: GHC [SUM]`}
                 </div>
               )}
             </div>
-            
+
             <div className="p-5 border-t border-neutral-850 bg-neutral-950 text-center text-[10px] text-neutral-500 font-mono tracking-widest font-black uppercase">
               SECURE SHA-2 TRANSACTION LEDGER PORTAL
             </div>

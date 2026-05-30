@@ -127,8 +127,8 @@ export const Dashboard: React.FC = () => {
           <button
             onClick={() => setActiveLayout('bento')}
             className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'bento'
-                ? 'bg-white text-black font-black'
-                : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
+              ? 'bg-white text-black font-black'
+              : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
               }`}
           >
             <LayoutGrid size={14} /> Sleek Bento Grid
@@ -136,8 +136,8 @@ export const Dashboard: React.FC = () => {
           <button
             onClick={() => setActiveLayout('class-perf')}
             className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'class-perf'
-                ? 'bg-white text-black font-black'
-                : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
+              ? 'bg-white text-black font-black'
+              : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
               }`}
           >
             <Activity size={14} /> Classrooms Tracker
@@ -145,8 +145,8 @@ export const Dashboard: React.FC = () => {
           <button
             onClick={() => setActiveLayout('alerts-desk')}
             className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer flex items-center gap-2 ${activeLayout === 'alerts-desk'
-                ? 'bg-white text-black font-black'
-                : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
+              ? 'bg-white text-black font-black'
+              : 'text-neutral-400 hover:text-white hover:bg-neutral-900/40'
               }`}
           >
             <AlertTriangle size={14} className={pendingAlerts.length > 0 ? 'text-amber-450 animate-bounce' : ''} /> Alerts Deck ({pendingAlerts.length})
@@ -426,7 +426,7 @@ export const Dashboard: React.FC = () => {
                           </td>
                           <td className="py-3.5 text-right">
                             <span className={`inline-block px-2.5 py-1 text-[10px] font-black font-mono tracking-widest uppercase ${met.rate > 85 ? 'bg-emerald-950 border border-emerald-800 text-emerald-400' :
-                                met.rate > 50 ? 'bg-amber-950 border border-amber-800 text-amber-450' : 'bg-red-950 border border-red-800 text-red-450'
+                              met.rate > 50 ? 'bg-amber-950 border border-amber-800 text-amber-450' : 'bg-red-950 border border-red-800 text-red-450'
                               }`}>
                               {met.rate.toFixed(0)}%
                             </span>
@@ -470,8 +470,8 @@ export const Dashboard: React.FC = () => {
                           onClick={() => handleDialGuardian(st.studentId, st.guardianPhone)}
                           disabled={notifiedStudents[st.studentId]}
                           className={`px-2.5 py-1 text-[9px] font-black uppercase tracking-widest border-2 transition-all cursor-pointer ${notifiedStudents[st.studentId]
-                              ? 'bg-amber-400 border-amber-400 text-black'
-                              : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 text-neutral-300 animate-pulse'
+                            ? 'bg-amber-400 border-amber-400 text-black'
+                            : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 text-neutral-300 animate-pulse'
                             }`}
                         >
                           {notifiedStudents[st.studentId] ? 'DIALING...' : 'DIAL GDN'}
@@ -654,8 +654,8 @@ export const Dashboard: React.FC = () => {
                       onClick={() => handleDialGuardian(st.studentId, st.guardianPhone)}
                       disabled={notifiedStudents[st.studentId]}
                       className={`w-full text-center text-xs font-black uppercase tracking-widest py-3.5 border-2 transition-all cursor-pointer ${notifiedStudents[st.studentId]
-                          ? 'bg-amber-400 border-amber-400 text-black font-black'
-                          : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 hover:bg-neutral-900/50 text-white'
+                        ? 'bg-amber-400 border-amber-400 text-black font-black'
+                        : 'bg-neutral-950 border-neutral-800 hover:border-neutral-600 hover:bg-neutral-900/50 text-white'
                         }`}
                     >
                       {notifiedStudents[st.studentId] ? (
@@ -678,4 +678,3 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
-export default Dashboard;

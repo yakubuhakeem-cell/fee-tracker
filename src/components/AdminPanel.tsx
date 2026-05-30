@@ -10,12 +10,12 @@ import { Plus, UserPlus, Trash2, Edit2, ShieldAlert, Check, X, ToggleLeft, Toggl
 import { getClassCategory } from '../initialData';
 
 export const AdminPanel: React.FC = () => {
-  const { 
-    students, 
-    users, 
-    addStudent, 
-    updateStudent, 
-    deleteStudent, 
+  const {
+    students,
+    users,
+    addStudent,
+    updateStudent,
+    deleteStudent,
     toggleMfaForUser,
     registerStaff,
     currentUser
@@ -28,7 +28,7 @@ export const AdminPanel: React.FC = () => {
   const [newStudentClass, setNewStudentClass] = useState<StudentClass>('B1');
   const [newStudentPhone, setNewStudentPhone] = useState('');
   const [editStudentObj, setEditStudentObj] = useState<Student | null>(null);
-  
+
   // Success indicator
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
@@ -135,21 +135,19 @@ export const AdminPanel: React.FC = () => {
         <div className="flex gap-2 p-1.5 bg-neutral-950 border-2 border-neutral-850 w-full md:w-auto">
           <button
             onClick={() => setActiveTab('students')}
-            className={`w-1/2 md:w-auto px-5 py-2.5 font-black text-[11px] uppercase tracking-widest transition-all ${
-              activeTab === 'students'
-                ? 'bg-amber-400 text-black'
-                : 'text-neutral-500 hover:text-white'
-            }`}
+            className={`w-1/2 md:w-auto px-5 py-2.5 font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'students'
+              ? 'bg-amber-400 text-black'
+              : 'text-neutral-500 hover:text-white'
+              }`}
           >
             Pupil Logs
           </button>
           <button
             onClick={() => setActiveTab('mfa')}
-            className={`w-1/2 md:w-auto px-5 py-2.5 font-black text-[11px] uppercase tracking-widest transition-all ${
-              activeTab === 'mfa'
-                ? 'bg-amber-400 text-black'
-                : 'text-neutral-500 hover:text-white'
-            }`}
+            className={`w-1/2 md:w-auto px-5 py-2.5 font-black text-[11px] uppercase tracking-widest transition-all ${activeTab === 'mfa'
+              ? 'bg-amber-400 text-black'
+              : 'text-neutral-500 hover:text-white'
+              }`}
           >
             RBAC & MFA Hub
           </button>
@@ -236,8 +234,8 @@ export const AdminPanel: React.FC = () => {
                     <Edit2 size={18} className="text-amber-400" />
                     <h3 className="text-sm font-black uppercase tracking-widest text-white">Modify Pupil File</h3>
                   </div>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => setEditStudentObj(null)}
                     className="text-xs font-black text-neutral-500 hover:text-white uppercase tracking-widest"
                   >
@@ -342,11 +340,10 @@ export const AdminPanel: React.FC = () => {
                     <button
                       onClick={() => handleToggleStudentActive(st)}
                       title={st.active ? 'Deactivate from checkout register' : 'Reactivate into register'}
-                      className={`p-2 border-2 transition-colors cursor-pointer ${
-                        st.active 
-                          ? 'border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-600 bg-neutral-950' 
-                          : 'border-red-800 text-red-500 bg-red-950/20'
-                      }`}
+                      className={`p-2 border-2 transition-colors cursor-pointer ${st.active
+                        ? 'border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-600 bg-neutral-950'
+                        : 'border-red-800 text-red-500 bg-red-950/20'
+                        }`}
                     >
                       {st.active ? <Check size={14} className="stroke-[3]" /> : <X size={14} className="stroke-[3]" />}
                     </button>
@@ -496,7 +493,7 @@ export const AdminPanel: React.FC = () => {
             <div className="divide-y-2 divide-neutral-850 border-2 border-neutral-80 w-full overflow-hidden bg-neutral-950">
               {users.map(u => {
                 const matchesCurrentUser = currentUser?.id === u.id;
-                
+
                 return (
                   <div key={u.id} className="p-6 flex flex-col xl:flex-row justify-between xl:items-center gap-4 hover:bg-neutral-900/10 transition-colors">
                     <div className="space-y-2">

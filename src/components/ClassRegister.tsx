@@ -10,11 +10,11 @@ import { Check, X, Search, Landmark, BellRing, ChevronRight, CheckSquare, Users,
 import { motion } from 'motion/react';
 
 export const ClassRegister: React.FC = () => {
-  const { 
-    students, 
-    payments, 
-    currentDate, 
-    recordPayment, 
+  const {
+    students,
+    payments,
+    currentDate,
+    recordPayment,
     bulkRecordPayments,
     currentUser,
     deletePayment
@@ -56,7 +56,7 @@ export const ClassRegister: React.FC = () => {
   // Filter students by search query
   const filteredStudents = useMemo(() => {
     if (!searchQuery.trim()) return classStudents;
-    return classStudents.filter(s => 
+    return classStudents.filter(s =>
       s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       s.rollNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -154,11 +154,10 @@ export const ClassRegister: React.FC = () => {
                   <button
                     key={cls}
                     onClick={() => setSelectedClass(cls)}
-                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${
-                      selectedClass === cls
-                        ? 'bg-amber-400 text-black border-amber-400'
-                        : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
-                    }`}
+                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${selectedClass === cls
+                      ? 'bg-amber-400 text-black border-amber-400'
+                      : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
+                      }`}
                   >
                     {cls}
                   </button>
@@ -174,11 +173,10 @@ export const ClassRegister: React.FC = () => {
                   <button
                     key={cls}
                     onClick={() => setSelectedClass(cls)}
-                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${
-                      selectedClass === cls
-                        ? 'bg-amber-400 text-black border-amber-400'
-                        : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
-                    }`}
+                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${selectedClass === cls
+                      ? 'bg-amber-400 text-black border-amber-400'
+                      : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
+                      }`}
                   >
                     {cls}
                   </button>
@@ -194,11 +192,10 @@ export const ClassRegister: React.FC = () => {
                   <button
                     key={cls}
                     onClick={() => setSelectedClass(cls)}
-                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${
-                      selectedClass === cls
-                        ? 'bg-amber-400 text-black border-amber-400'
-                        : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
-                    }`}
+                    className={`px-4 py-2 font-black text-[11px] tracking-widest uppercase transition-all border-2 ${selectedClass === cls
+                      ? 'bg-amber-400 text-black border-amber-400'
+                      : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:bg-neutral-850'
+                      }`}
                   >
                     {cls}
                   </button>
@@ -249,11 +246,10 @@ export const ClassRegister: React.FC = () => {
               const isPaid = !!paidInfo;
 
               return (
-                <div 
-                  key={student.id} 
-                  className={`flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 transition-colors ${
-                    isPaid ? 'bg-amber-400/[0.02]' : 'hover:bg-neutral-800/10'
-                  }`}
+                <div
+                  key={student.id}
+                  className={`flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 transition-colors ${isPaid ? 'bg-amber-400/[0.02]' : 'hover:bg-neutral-800/10'
+                    }`}
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-3">
@@ -282,11 +278,10 @@ export const ClassRegister: React.FC = () => {
                     {/* Pay trigger */}
                     <button
                       onClick={() => handleTogglePayment(student.id)}
-                      className={`flex items-center gap-2 px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all w-full sm:w-40 justify-center border-2 cursor-pointer ${
-                        isPaid 
-                          ? 'bg-amber-400 text-black border-amber-400 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]'
-                          : 'bg-neutral-950 text-neutral-450 border-neutral-800 hover:border-neutral-600 hover:text-white'
-                      }`}
+                      className={`flex items-center gap-2 px-5 py-2.5 text-xs font-black uppercase tracking-widest transition-all w-full sm:w-40 justify-center border-2 cursor-pointer ${isPaid
+                        ? 'bg-amber-400 text-black border-amber-400 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.1)]'
+                        : 'bg-neutral-950 text-neutral-450 border-neutral-800 hover:border-neutral-600 hover:text-white'
+                        }`}
                     >
                       {isPaid ? (
                         <>
@@ -319,7 +314,7 @@ export const ClassRegister: React.FC = () => {
               <p className="text-xs text-neutral-400 font-bold leading-relaxed">
                 Send a real-time ledger dispatch token receipt directly to the guardian core of <span className="font-extrabold text-white">{guardianSmsStudent.name}</span>:
               </p>
-              
+
               <div className="bg-neutral-950 text-emerald-400 font-mono text-[11px] p-5 border-2 border-neutral-850 leading-relaxed shadow-inner space-y-2">
                 <p className="text-neutral-500 font-bold uppercase tracking-wider">Sender Mask: DailyFeeGhana</p>
                 <p className="text-neutral-500 font-bold">Guardian: {guardianSmsStudent.guardianPhone}</p>
