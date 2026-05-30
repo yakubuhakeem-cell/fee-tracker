@@ -31,7 +31,11 @@ function NavigationWrapper() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'register' | 'admin' | 'reports'>('register');
 
   // If nobody is logged in, show login page
+<<<<<<< HEAD
   if (!currentUser) {
+=======
+  if (!currentUser || !currentUser.role) {
+>>>>>>> 51561d3a1e25fc80765cd9222fa6b0368bcaa414
     return <LoginMFA />;
   }
 
