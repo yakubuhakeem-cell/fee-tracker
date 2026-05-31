@@ -5,7 +5,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/fee-tracker/',   // 👈 critical for GitHub Pages
+    // Changed from '/fee-tracker/' to '/' for Cloudflare Pages root deployment
+    base: '/', 
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
