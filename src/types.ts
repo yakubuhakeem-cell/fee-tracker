@@ -5,7 +5,7 @@
 
 export type SchoolCategory = 'Pre-school' | 'Primary' | 'JHS';
 
-export type StudentClass =
+export type StudentClass = 
   | 'Nursery' | 'KG1' | 'KG2' // Pre-school
   | 'B1' | 'B2' | 'B3' | 'B4' | 'B5' | 'B6' // Primary
   | 'B7' | 'B8' | 'B9'; // JHS
@@ -18,6 +18,7 @@ export interface Student {
   rollNumber: string;
   active: boolean;
   guardianPhone?: string;
+  photoUrl?: string;
 }
 
 export interface PaymentRecord {
@@ -31,6 +32,7 @@ export interface PaymentRecord {
   timestamp: string; // ISO string
   collectedBy: string; // Teacher name / ID
   verified: boolean;
+  notes?: string;
 }
 
 export type UserRole = 'Administrator' | 'Teacher' | 'Accountant';
@@ -43,6 +45,16 @@ export interface UserAccount {
   assignedClass?: StudentClass; // For teachers
   mfaEnabled: boolean;
   mfaSecret?: string; // QR code / setup value
+  active?: boolean;
+}
+
+export interface Term {
+  id: string;
+  name: string; // e.g. 'Term 1 - 2026'
+  startDate: string; // YYYY-MM-DD
+  daysCount: number; // Allocated school days
+  schoolDays: string[]; // Mon-Fri dates generated from startDate
+  active: boolean;
 }
 
 export interface DailyReportSummary {
