@@ -11,24 +11,37 @@ import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { ReportPanel } from './components/ReportPanel';
 import { SchoolLogo } from './components/SchoolLogo';
-import {
-  Fingerprint,
-  LayoutDashboard,
-  FolderEdit,
-  Receipt,
-  LogOut,
-  Settings,
-  Menu,
-  X,
-  ShieldCheck,
-  GraduationCap
+import { db } from './lib/firebase';
+import { 
+  Fingerprint, 
+  LayoutDashboard, 
+  FolderEdit, 
+  Receipt, 
+  LogOut, 
+  Settings, 
+  Menu, 
+  X, 
+  ShieldCheck, 
+  GraduationCap 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 function NavigationWrapper() {
-  const { currentUser, logout, currentDate, resetData } = useApp();
+  const { 
+    currentUser, 
+    logout, 
+    currentDate, 
+    resetData, 
+    firebaseConnected,
+    storageMode,
+    setStorageMode,
+    seedFirebaseFromLocal
+  } = useApp();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'register' | 'admin' | 'reports'>('register');
+  const [showSyncConfirm, setShowSyncConfirm] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'syncing' | 'success' | 'error'>('idle');
+  const [syncErrorMessage, setSyncErrorMessage] = useState('');
 
   // If nobody is logged in, show login page
   if (!currentUser || !currentUser.role) {
@@ -92,10 +105,21 @@ function NavigationWrapper() {
           {/* Desktop Right items */}
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-emerald-500"></span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                System Secure
-              </span>
+              {firebaseConnected ? (
+                <>
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 border border-emerald-990/80 bg-emerald-950/40 px-2 py-0.5" title="Firebase Firestore Connected">
+                    Firebase Live
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 bg-amber-400"></span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 border border-amber-990/80 bg-amber-950/40 px-2 py-0.5" title="Offline mode using local browser storage">
+                    Local Ledger
+                  </span>
+                </>
+              )}
             </div>
 
             <div className="h-8 w-[1px] bg-neutral-800" />
@@ -110,7 +134,7 @@ function NavigationWrapper() {
             <div className="h-8 w-[1px] bg-neutral-800" />
 
             <div className="flex gap-2">
-              <button
+              <button 
                 onClick={logout}
                 className="bg-neutral-800 hover:bg-amber-400 hover:text-black text-neutral-400 p-2 border border-neutral-700 hover:border-amber-400 transition-colors"
                 title="Log out securely"
@@ -121,7 +145,7 @@ function NavigationWrapper() {
           </div>
 
           {/* Mobile responsive toggle */}
-          <button
+          <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2 text-white/85 hover:text-white hover:bg-white/5 border border-neutral-800 transition-all"
           >
@@ -129,6 +153,122 @@ function NavigationWrapper() {
           </button>
         </div>
       </header>
+
+      {/* Sync Link Warning banner */}
+      {db.isActive() && storageMode === 'local' && (
+        <div className="bg-amber-500 text-black px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-bold border-b-4 border-amber-600 animate-fade-in shrink-0 transition-all duration-350">
+          {!showSyncConfirm ? (
+            <>
+              <div className="flex items-center gap-3">
+                <span className="text-sm">⚠️</span>
+                <span className="leading-relaxed">
+                  <strong>Offline Mode Detected:</strong> Any pupil registers or check-ins (such as class <strong>B5</strong> pupil registers) logged on this device are saved only inside this browser. Enable Cloud Sync to synchronize your phone and laptop!
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  setShowSyncConfirm(true);
+                  setSyncStatus('idle');
+                }}
+                className="shrink-0 bg-neutral-950 hover:bg-neutral-900 border border-neutral-900 text-amber-400 hover:text-amber-300 font-mono tracking-wider uppercase text-[10px] font-black px-4 py-2.5 shadow transition-all cursor-pointer"
+              >
+                Switch & Sync Cloud
+              </button>
+            </>
+          ) : (
+            <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+              {syncStatus === 'idle' && (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm flex-shrink-0">❓</span>
+                    <span className="leading-relaxed">
+                      <strong>Are you sure you want to switch to Cloud and Synchronize?</strong> This will bundle your local pupil records & payments and merge them with live Firestore so your phone & laptop match.
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={async () => {
+                        try {
+                          setSyncStatus('syncing');
+                          const response = await seedFirebaseFromLocal();
+                          if (response.success) {
+                            setSyncStatus('success');
+                            // Delay actual cloud switch of view slightly so user sees the nice green success state
+                            setTimeout(() => {
+                              setStorageMode('cloud');
+                              setShowSyncConfirm(false);
+                              setSyncStatus('idle');
+                            }, 2000);
+                          } else {
+                            setSyncStatus('error');
+                            setSyncErrorMessage(response.message);
+                          }
+                        } catch (err) {
+                          setSyncStatus('error');
+                          setSyncErrorMessage(err instanceof Error ? err.message : String(err));
+                        }
+                      }}
+                      className="bg-neutral-950 hover:bg-neutral-900 text-emerald-400 font-mono tracking-wider uppercase text-[10px] font-black px-3.5 py-2 cursor-pointer shadow border border-neutral-900"
+                    >
+                      ✓ Yes, Merge & Sync
+                    </button>
+                    <button
+                      onClick={() => setShowSyncConfirm(false)}
+                      className="bg-transparent hover:bg-black/10 text-neutral-900 hover:text-black font-mono tracking-wider uppercase text-[10px] font-black px-3 py-2 cursor-pointer transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {syncStatus === 'syncing' && (
+                <div className="flex items-center gap-3 py-1">
+                  <span className="animate-spin text-sm flex-shrink-0 pb-0.5">⌛</span>
+                  <span>Synchronizing internal ledger records with live Firestore Cloud database... Please stay on this page.</span>
+                </div>
+              )}
+
+              {syncStatus === 'success' && (
+                <div className="flex items-center gap-3 py-1 text-neutral-950">
+                  <span className="text-sm flex-shrink-0">🎉</span>
+                  <span className="font-extrabold uppercase tracking-wide">Handshake successfully verified! Switch completes instantly...</span>
+                </div>
+              )}
+
+              {syncStatus === 'error' && (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm flex-shrink-0">❌</span>
+                    <span className="leading-relaxed">
+                      <strong>Handshake Failed:</strong> {syncErrorMessage}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => {
+                        setSyncStatus('idle');
+                      }}
+                      className="bg-neutral-950 hover:bg-neutral-900 text-amber-500 font-mono tracking-wider uppercase text-[10px] font-black px-3.5 py-2 cursor-pointer"
+                    >
+                      Try Again
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowSyncConfirm(false);
+                        setSyncStatus('idle');
+                      }}
+                      className="bg-transparent text-neutral-900 font-mono tracking-wider uppercase text-[10px] px-2 py-1"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Main workspace layout */}
       <div className="flex-1 flex flex-col md:flex-row relative overflow-hidden">
@@ -142,17 +282,18 @@ function NavigationWrapper() {
               <nav className="space-y-2">
                 {visibleTabs.map(tab => {
                   const active = activeTab === tab.id;
-
+                  
                   return (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as any)}
-                      className={`w-full text-left font-black text-lg tracking-tight transition-all block py-1 select-none border-l-4 ${active
+                      className={`w-full text-left font-black text-lg tracking-tight transition-all block py-1 select-none border-l-4 ${
+                        active
                           ? 'text-amber-400 border-amber-400 pl-3'
                           : 'text-neutral-500 hover:text-white border-transparent pl-3'
-                        }`}
+                      }`}
                     >
-                      <span className="uppercase">{tab.id === 'register' ? 'Daily Check-In' : tab.id === 'dashboard' ? 'Cash Flow Feed' : tab.id === 'reports' ? 'Audits & Exports' : 'Pupil Enrollment'}</span>
+                      <span className="uppercase">{tab.id === 'register' ? 'Daily Check-In' : tab.id === 'dashboard' ? 'Cash Flow Feed' : tab.id === 'reports' ? 'Audits & Exports' : 'Staff & Pupils'}</span>
                     </button>
                   );
                 })}
@@ -198,7 +339,7 @@ function NavigationWrapper() {
                   <p className="text-xs font-black uppercase text-white">{currentUser.name}</p>
                   <p className="text-[10px] font-mono text-amber-400 uppercase tracking-widest font-bold">{currentUser.role} Session</p>
                 </div>
-                <button
+                <button 
                   onClick={logout}
                   className="bg-neutral-850 hover:bg-amber-400 hover:text-black border border-neutral-700 text-white px-3 py-1.5 font-black text-xs transition-all uppercase tracking-widest"
                 >
@@ -209,7 +350,7 @@ function NavigationWrapper() {
               <nav className="space-y-3 py-2">
                 {visibleTabs.map(tab => {
                   const active = activeTab === tab.id;
-
+                  
                   return (
                     <button
                       key={tab.id}
@@ -217,12 +358,13 @@ function NavigationWrapper() {
                         setActiveTab(tab.id as any);
                         setMobileMenuOpen(false);
                       }}
-                      className={`w-full text-left font-black text-base tracking-tight transition-all block py-1.5 border-l-4 ${active
+                      className={`w-full text-left font-black text-base tracking-tight transition-all block py-1.5 border-l-4 ${
+                        active
                           ? 'text-amber-400 border-amber-400 pl-3'
                           : 'text-neutral-500 hover:text-neutral-200 border-transparent pl-3'
-                        }`}
+                      }`}
                     >
-                      <span>{tab.id === 'register' ? 'DAILY CHECK-IN' : tab.id === 'dashboard' ? 'CASH FLOW FEED' : tab.id === 'reports' ? 'AUDITS & EXPORTS' : 'PUPIL ENROLLMENT'}</span>
+                      <span>{tab.id === 'register' ? 'DAILY CHECK-IN' : tab.id === 'dashboard' ? 'CASH FLOW FEED' : tab.id === 'reports' ? 'AUDITS & EXPORTS' : 'STAFF & PUPIL REGISTRY'}</span>
                     </button>
                   );
                 })}
