@@ -18,6 +18,14 @@ export function getClassCategory(className: StudentClass): SchoolCategory {
 
 export const INITIAL_USERS: UserAccount[] = [
   {
+    id: 'admin-hakeem',
+    name: 'Hakeem Yakubu',
+    email: 'yakubuhakeem@gmail.com',
+    role: 'Administrator',
+    mfaEnabled: true,
+    mfaSecret: 'SHA-SAAKOKEY2003'
+  },
+  {
     id: 'admin-1',
     name: 'Madam Elizabeth Osei',
     email: 'admin@school.edu',
