@@ -90,7 +90,42 @@ npm run build
 
 ---
 
-## 🔒 Security & Safe Commit Audits
+## � Deployment to Cloudflare Pages
+
+The application is automatically deployed to **Cloudflare Pages** at `fee-tracker.pages.dev` whenever you push to the `main` branch.
+
+### Prerequisites for Auto-Deployment
+
+1. **GitHub Secrets Setup** — Add these two secrets to your repository (`Settings` → `Secrets and variables` → `Actions`):
+   - `CLOUDFLARE_API_TOKEN`: Your Cloudflare API token (create from [Cloudflare Dashboard](https://dash.cloudflare.com/profile/api-tokens))
+   - `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID (visible in [Cloudflare Dashboard](https://dash.cloudflare.com/))
+
+2. **Cloudflare Pages Project** — The project `fee-tracker` must exist in Cloudflare Pages. If not, [create it here](https://dash.cloudflare.com/pages).
+
+### How Deployment Works
+
+- Every push to `main` triggers `.github/workflows/deploy.yml`
+- The workflow builds the project (`npm run build`), generating `/dist` folder
+- **Wrangler CLI** automatically deploys the `/dist` folder to Cloudflare Pages
+- Your site is live at `https://fee-tracker.pages.dev` within 1–2 minutes
+
+### Manual Deployment (without GitHub)
+
+If needed, deploy manually using Wrangler CLI:
+```bash
+# Install Wrangler globally (if not already)
+npm install -g wrangler
+
+# Authenticate with Cloudflare
+wrangler login
+
+# Deploy the dist folder
+wrangler pages deploy dist --project-name=fee-tracker
+```
+
+---
+
+## �🔒 Security & Safe Commit Audits
 
 This repository complies with the highest standards of secure Git practices:
 * **No hardcoded secrets**: All configuration is initialized standard or loaded from the template environment.

@@ -1,0 +1,17 @@
+name = "fee-tracker"
+type = "javascript"
+account_id = ""  # Replace with your Cloudflare account ID
+workers_dev = true
+routes = []
+zone_id = ""     # Only needed if deploying to a custom domain
+
+# Pages configuration
+[build]
+command = "npm run build"
+cwd = "./"
+
+[build.upload]
+format = "service-worker"
+
+[env.production]
+account_id = ""  # Replace with your Cloudflare account ID
