@@ -1,6 +1,6 @@
 name = "fee-tracker"
 type = "javascript"
-account_id = ""  # Replace with your Cloudflare account ID
+account_id = ""  e52b5f1e36b7b0b8a90062693ca28ffa
 workers_dev = true
 routes = []
 zone_id = ""     # Only needed if deploying to a custom domain
@@ -14,4 +14,4 @@ cwd = "./"
 format = "service-worker"
 
 [env.production]
-account_id = ""  # Replace with your Cloudflare account ID
+account_id = ""  e52b5f1e36b7b0b8a90062693ca28ffa
